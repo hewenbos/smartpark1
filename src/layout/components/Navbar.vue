@@ -4,15 +4,13 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 用户名称 -->
-          <span class="name">黑马管理员</span>
+          <span class="name">{{ $store.getters.username }}</span>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
-          <a target="_blank">
-            <el-dropdown-item> 项目地址 </el-dropdown-item>
-          </a>
+
           <el-dropdown-item divided @click.native="logout">
             <span style="display: block">退出登录</span>
           </el-dropdown-item>
@@ -23,13 +21,18 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
+
   methods: {
+    ...mapMutations('user', ['removeToken']),
     // 退出登录
-    logout() {
+    async logout() {
+      await this.removeToken()
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
+
 }
 </script>
 

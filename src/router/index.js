@@ -26,6 +26,27 @@ export const routes = [
       meta: { title: '工作台', icon: 'el-icon-data-board' }
     }]
   },
+
+  {
+    path: '/car/addMonthCard',
+    hidden: true,
+    component: () => import('@/views/Car/CarCard/CarAddMonthCard.vue')
+  },
+  {
+    path: '/car/viewMonthCard',
+    hidden: true,
+    component: () => import('@/views/Car/CarCard/CarViewMonthCard.vue')
+  },
+  {
+    path: '/car/renewMonthCard',
+    hidden: true,
+    component: () => import('@/views/Car/CarCard/CarRenewMonthCard.vue')
+  },
+  {
+    path: '/warn/detail/:id',
+    hidden: true,
+    component: () => import('@/views/Rod/RodWarn/WarnDetail.vue')
+  },
   {
     path: '/park',
     component: Layout,
@@ -71,6 +92,15 @@ export const routes = [
       permission: 'parking:rule',
       component: () => import('@/views/Car/CarRule'),
       meta: { title: '计费规则管理' }
+    }]
+  },
+  {
+    path: '/propety/cost',
+    component: Layout,
+    children: [{
+      path: '',
+      component: () => import('@/views/Propety/index.vue'),
+      meta: { title: '物业费管理', icon: 'el-icon-wallet' }
     }]
   },
   {

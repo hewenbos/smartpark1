@@ -3,7 +3,10 @@
 @import './transition.scss';
 @import './element-variables.scss';
 @import './reset-element.scss';
-
+:root{
+  --park-color:#909399;
+  --park-color1:#303035;
+}
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;

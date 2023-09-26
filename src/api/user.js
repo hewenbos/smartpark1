@@ -13,3 +13,11 @@ export function loginAPI(data) {
     data
   })
 }
+
+// 获取用户信息
+export const getUserInfoApi = () => {
+  return request({
+    url: '/park/user/profile',
+    method: 'GET'
+  })
+}

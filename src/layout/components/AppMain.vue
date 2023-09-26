@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
 .app-wrapper {
-  padding: 0 20px;
+  padding: 0 10px 0 20px;
 }
 
 .app-main {
@@ -29,8 +29,9 @@ export default {
   height: calc(100vh - 80px);
   width: 100%;
   position: relative;
-  overflow-y: auto;
-  background-color: #fff;
-  padding: 20px 20px 0;
+  overflow-y:scroll;
+}
+.app-main::-webkit-scrollbar{
+  display: none;
 }
 </style>
