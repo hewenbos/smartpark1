@@ -66,7 +66,7 @@
           <div v-else-if="item.prop === 'handleStatus'">
             {{ ['','已派单','','已完成','' ][scope.row['handleStatus']] }}
           </div>
-          <!-- <div /> -->
+          <div v-else-if="item.prop === 'status' && item.prop ==='roleName'">{{ ['未启用','启用'][scope.row[status]] }}</div>
           <div v-else>
             {{ scope.row[item.prop] }}
           </div>

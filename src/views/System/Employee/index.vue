@@ -4,12 +4,12 @@
       <el-form inline :mode="form">
         <globelSearch v-model="form.name" label="员工姓名" placeholder="请输入员工姓名" />
         <el-form-item>
-          <el-button type="primary" size="small">查询</el-button>
+          <el-button type="primary" size="small" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
 
       <div class="addBtn">
-        <el-button type="primary" size="small">添加员工</el-button>
+        <el-button type="primary" size="small" @click="addoredit">添加员工</el-button>
       </div>
 
       <globelTabel :tabel-list="tabelList" />
@@ -19,6 +19,7 @@
         @handleSizeChange="handleSizeChange"
         @handleCurrentChange="handleCurrentChange"
       />
+      <EmployeeAddOrEditPopUp ref="EmployeeAddOrEditPopUp" :dialog-visible.sync="dialogVisible" :title="title" @updateBuding="getEmployee" />
     </div>
   </div>
 
@@ -28,10 +29,12 @@
 import globelSearch from '@/components/globelSearch.vue'
 import globelTabel from '@/components/globelTabel.vue'
 import globelPage from '@/components/globelPage.vue'
-import { getEmployeeApi } from '@/api/employee'
+import { getEmployeeApi, getDEmployeeApi, getCancelEmployeeApi } from '@/api/employee'
+import { MixinMessageBox, MixinCancel } from '@/composable/index'
+import EmployeeAddOrEditPopUp from './components/EmployeeAddOrEditPopUp.vue'
 export default {
   name: 'Employee',
-  components: { globelSearch, globelTabel, globelPage },
+  components: { globelSearch, globelTabel, globelPage, EmployeeAddOrEditPopUp },
   data() {
     return {
       form: {},
@@ -53,8 +56,7 @@ export default {
           },
           {
             prop: 'userName',
-            label: '登录账号',
-            width: '200px'
+            label: '登录账号'
           },
           {
             prop: 'phonenumber',
@@ -70,24 +72,31 @@ export default {
           },
           {
             prop: 'createTime',
-            label: '添加时间'
+            label: '添加时间',
+            width: '150px'
           },
           {
             label: '操作',
-            name1: '派单',
-            name3: '详情',
-            name4: '删除'
+            name1: '编辑',
+            name3: '删除',
+            name4: '重置密码',
+            width: '180px'
           }
         ],
         tabelEvent: {
           renewEvent: (row) => {
-            this.renewEvent(row)
+            this.delBuding(row)
           },
           SurrenderEvent: (row) => {
-            this.delBuding(row)
+            this.canel(row)
+          },
+          cartEvent: (row) => {
+            this.addoredit(row)
           }
         }
-      }
+      },
+      dialogVisible: false,
+      title: ''
     }
   },
   created() {
@@ -107,6 +116,33 @@ export default {
       const { data } = await getEmployeeApi({ ...this.pageInfo, ...this.form })
       this.pageInfo.total = data.total
       this.tabelList.tableData = data.rows
+    },
+    // 搜索
+    search() {
+      this.getEmployee()
+    },
+    // 删除
+    async delBuding(row) {
+      await MixinMessageBox(row.id, getDEmployeeApi)
+      this.getEmployee()
+    },
+    // 重置密码
+    async  canel(row) {
+      await MixinCancel(row.id, getCancelEmployeeApi)
+    },
+    // 添加或编辑
+    addoredit(row) {
+      if (row.id) {
+        this.title = '编辑员工'
+        this.dialogVisible = true
+        this.$refs['EmployeeAddOrEditPopUp'].edithandel(row)
+      } else {
+        this.title = '添加员工'
+        this.dialogVisible = true
+      }
+    },
+    edit() {
+      console.log(111)
     }
   }
 }
